@@ -1,14 +1,27 @@
 package com.example.projectpoo.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import com.example.projectpoo.service.*;
-import com.example.projectpoo.model.*;
-
-
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.projectpoo.model.Carro;
+import com.example.projectpoo.repository.CarroRepository;
+import com.example.projectpoo.service.CarroService;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -17,6 +30,17 @@ public class CarroController {
 
     @Autowired
     CarroService carroService;
+
+    @Autowired
+    private CarroRepository carroRepository;
+
+    @GetMapping("/produtos")
+    public Page<Carro> getProdutos(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        return carroRepository.findAll(pageRequest);
+    }
 
     @PostMapping()
     public ResponseEntity<Carro> salvarCarro(@RequestBody Carro carro) {
