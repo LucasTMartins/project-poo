@@ -34,10 +34,10 @@ public class CarroController {
     @Autowired
     private CarroRepository carroRepository;
 
-    @GetMapping("/produtos")
-    public Page<Carro> getProdutos(
+    @GetMapping("/pageable/all")
+    public Page<Carro> getCarro(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
+            @RequestParam(defaultValue = "2") int size) {
         PageRequest pageRequest = PageRequest.of(page, size);
         return carroRepository.findAll(pageRequest);
     }
